@@ -1,0 +1,7 @@
+version: 2
+sources:
+  - name: raw
+    database: ttf-gas-pipeline
+    schema: ttf_gas
+    tables:
+      - name: stg_ttf_panel

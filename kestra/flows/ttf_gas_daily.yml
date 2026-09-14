@@ -1,0 +1,68 @@
+id: ttf_gas_daily
+namespace: ttf
+description: Daily TTF extract, lake, warehouse, dbt
+
+tasks:
+  - id: extract
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      volumes:
+        - /Users/verena/Documents/Python_Projects/ttf-gas-pipeline:/app
+    containerImage: python:3.12-slim
+    commands:
+      - pip install -q pandas pyarrow dbnomics
+      - python /app/ingest/extract_ttf.py
+
+  - id: transform
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      volumes:
+        - /Users/verena/Documents/Python_Projects/ttf-gas-pipeline:/app
+    containerImage: python:3.12-slim
+    commands:
+      - pip install -q pandas pyarrow
+      - python /app/ingest/transform_panel.py
+
+  - id: load_gcs
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      volumes:
+        - /Users/verena/Documents/Python_Projects/ttf-gas-pipeline:/app
+        - /Users/verena/.config/gcloud:/root/.config/gcloud
+    containerImage: python:3.12-slim
+    commands:
+      - pip install -q google-cloud-storage
+      - python /app/ingest/load_gcs.py
+
+  - id: load_bq
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      volumes:
+        - /Users/verena/Documents/Python_Projects/ttf-gas-pipeline:/app
+        - /Users/verena/.config/gcloud:/root/.config/gcloud
+    containerImage: python:3.12-slim
+    commands:
+      - pip install -q google-cloud-bigquery pandas pyarrow
+      - python /app/ingest/load_bq.py
+
+  - id: dbt_run
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      volumes:
+        - /Users/verena/Documents/Python_Projects/ttf-gas-pipeline:/app
+        - /Users/verena/.config/gcloud:/root/.config/gcloud
+        - /Users/verena/.dbt:/root/.dbt
+    containerImage: python:3.12-slim
+    commands:
+      - pip install -q dbt-bigquery
+      - dbt run --project-dir /app/dbt/ttf_gas --profiles-dir /root/.dbt
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 6 * * *"

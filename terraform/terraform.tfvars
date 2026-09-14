@@ -1,0 +1,5 @@
+project_id  = "ttf-gas-pipeline"
+region      = "europe-west2"
+location    = "EU"
+bucket_name = "ttf-gas-pipeline-lake"
+dataset_name = "ttf_gas"

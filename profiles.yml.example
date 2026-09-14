@@ -1,0 +1,10 @@
+ttf_gas:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: ttf-gas-pipeline
+      dataset: ttf_gas_dbt
+      location: EU
+      threads: 2
