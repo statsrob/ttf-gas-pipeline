@@ -224,9 +224,11 @@ Kestra 2.x blocks Docker bind mounts unless enabled. This repo sets `volume-enab
 - Do not commit `.env`, credentials, parquet files, or Terraform state.
 - Use `.env.example` and `dbt/ttf_gas/profiles.yml.example`.
 - Project id and bucket name are in `terraform/terraform.tfvars`.
-- Kestra flow bind-mounts  
-  `/Users/verena/Documents/Python_Projects/ttf-gas-pipeline`  
-  Change that path if you clone the repo somewhere else.
+- Kestra uses Docker named volumes, not a hardcoded laptop path.
+  From the repo root, `docker compose up -d` maps `${PWD}` to
+  `ttf-gas-pipeline_project-code`, `~/.config/gcloud` to
+  `ttf-gas-pipeline_gcloud-config`, and `~/.dbt` to
+  `ttf-gas-pipeline_dbt-config`. 
 
 ## Rubric mapping
 
