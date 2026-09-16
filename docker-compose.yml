@@ -1,6 +1,26 @@
+name: ttf-gas-pipeline
+
 volumes:
   postgres-data:
   kestra-data:
+  project-code:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}
+  gcloud-config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/.config/gcloud
+  dbt-config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/.dbt
 
 services:
   postgres:
@@ -24,7 +44,7 @@ services:
       - kestra-data:/app/storage
       - /var/run/docker.sock:/var/run/docker.sock
       - ./kestra/flows:/app/flows
-      - .:/app/project
+      - project-code:/app/project
     environment:
       KESTRA_CONFIGURATION: |
         datasources:

@@ -8,7 +8,7 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
-        - /Users/verena/Documents/Python_Projects/ttf-gas-pipeline:/app
+        - "{{ envs.HOST_PROJECT_DIR }}:/app"
     containerImage: python:3.12-slim
     commands:
       - pip install -q pandas pyarrow dbnomics
@@ -19,7 +19,7 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
-        - /Users/verena/Documents/Python_Projects/ttf-gas-pipeline:/app
+        - "{{ envs.HOST_PROJECT_DIR }}:/app"
     containerImage: python:3.12-slim
     commands:
       - pip install -q pandas pyarrow
@@ -30,8 +30,8 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
-        - /Users/verena/Documents/Python_Projects/ttf-gas-pipeline:/app
-        - /Users/verena/.config/gcloud:/root/.config/gcloud
+        - "{{ envs.HOST_PROJECT_DIR }}:/app"
+        - "{{ envs.HOST_GCLOUD }}:/root/.config/gcloud"
     containerImage: python:3.12-slim
     commands:
       - pip install -q google-cloud-storage
@@ -42,8 +42,8 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
-        - /Users/verena/Documents/Python_Projects/ttf-gas-pipeline:/app
-        - /Users/verena/.config/gcloud:/root/.config/gcloud
+        - "{{ envs.HOST_PROJECT_DIR }}:/app"
+        - "{{ envs.HOST_GCLOUD }}:/root/.config/gcloud"
     containerImage: python:3.12-slim
     commands:
       - pip install -q google-cloud-bigquery pandas pyarrow
@@ -54,9 +54,9 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
-        - /Users/verena/Documents/Python_Projects/ttf-gas-pipeline:/app
-        - /Users/verena/.config/gcloud:/root/.config/gcloud
-        - /Users/verena/.dbt:/root/.dbt
+        - "{{ envs.HOST_PROJECT_DIR }}:/app"
+        - "{{ envs.HOST_GCLOUD }}:/root/.config/gcloud"
+        - "{{ envs.HOST_DBT }}:/root/.dbt"
     containerImage: python:3.12-slim
     commands:
       - pip install -q dbt-bigquery
