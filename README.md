@@ -224,7 +224,7 @@ Kestra 2.x blocks Docker bind mounts unless enabled. This repo sets `volume-enab
 - Do not commit `.env`, credentials, parquet files, or Terraform state.
 - Use `.env.example` and `dbt/ttf_gas/profiles.yml.example`.
 - Project id and bucket name are in `terraform/terraform.tfvars`.
-- Kestra mounts the repo via `HOST_PROJECT_DIR=${PWD}` from docker compose.
+- Kestra mounts the repo with Docker named volumes created from `${PWD}` when you run `docker compose up -d` in the repo root.
 
 ## Rubric mapping
 
