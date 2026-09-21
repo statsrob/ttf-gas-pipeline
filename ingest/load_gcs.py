@@ -1,9 +1,12 @@
+import os
 from pathlib import Path
 from google.cloud import storage
 
+ROOT = Path(__file__).resolve().parents[1]
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(ROOT / "google-credentials.json")
+
 PROJECT = "ttf-gas-pipeline"
 BUCKET = "ttf-gas-pipeline-lake"
-ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = ROOT / "ingest" / "raw"
 
 FILES = [

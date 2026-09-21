@@ -8,7 +8,7 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
-        - "{{ envs.HOST_PROJECT_DIR }}:/app"
+        - ttf-gas-pipeline_project-code:/app
     containerImage: python:3.12-slim
     commands:
       - pip install -q pandas pyarrow dbnomics
@@ -19,7 +19,7 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
-        - "{{ envs.HOST_PROJECT_DIR }}:/app"
+        - ttf-gas-pipeline_project-code:/app
     containerImage: python:3.12-slim
     commands:
       - pip install -q pandas pyarrow
@@ -30,8 +30,8 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
-        - "{{ envs.HOST_PROJECT_DIR }}:/app"
-        - "{{ envs.HOST_GCLOUD }}:/root/.config/gcloud"
+        - ttf-gas-pipeline_project-code:/app
+        - ttf-gas-pipeline_gcloud-config:/root/.config/gcloud
     containerImage: python:3.12-slim
     commands:
       - pip install -q google-cloud-storage
@@ -42,8 +42,8 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
-        - "{{ envs.HOST_PROJECT_DIR }}:/app"
-        - "{{ envs.HOST_GCLOUD }}:/root/.config/gcloud"
+        - ttf-gas-pipeline_project-code:/app
+        - ttf-gas-pipeline_gcloud-config:/root/.config/gcloud
     containerImage: python:3.12-slim
     commands:
       - pip install -q google-cloud-bigquery pandas pyarrow
@@ -54,13 +54,12 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
-        - "{{ envs.HOST_PROJECT_DIR }}:/app"
-        - "{{ envs.HOST_GCLOUD }}:/root/.config/gcloud"
-        - "{{ envs.HOST_DBT }}:/root/.dbt"
+        - ttf-gas-pipeline_project-code:/app
     containerImage: python:3.12-slim
     commands:
       - pip install -q dbt-bigquery
-      - dbt run --project-dir /app/dbt/ttf_gas --profiles-dir /root/.dbt
+      - export GOOGLE_APPLICATION_CREDENTIALS=/app/google-credentials.json
+      - dbt run --project-dir /app/dbt/ttf_gas --profiles-dir /app/dbt/ttf_gas
 
 triggers:
   - id: daily

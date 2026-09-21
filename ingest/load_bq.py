@@ -1,4 +1,9 @@
+import os
+from pathlib import Path
 from google.cloud import bigquery
+
+ROOT = Path(__file__).resolve().parents[1]
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(ROOT / "google-credentials.json")
 
 PROJECT = "ttf-gas-pipeline"
 DATASET = "ttf_gas"
