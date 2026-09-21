@@ -31,7 +31,6 @@ tasks:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
         - ttf-gas-pipeline_project-code:/app
-        - ttf-gas-pipeline_gcloud-config:/root/.config/gcloud
     containerImage: python:3.12-slim
     commands:
       - pip install -q google-cloud-storage
@@ -43,7 +42,6 @@ tasks:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
         - ttf-gas-pipeline_project-code:/app
-        - ttf-gas-pipeline_gcloud-config:/root/.config/gcloud
     containerImage: python:3.12-slim
     commands:
       - pip install -q google-cloud-bigquery pandas pyarrow
@@ -58,6 +56,8 @@ tasks:
     containerImage: python:3.12-slim
     commands:
       - pip install -q dbt-bigquery
+      - test -f /app/google-credentials.json
+      - test -f /app/dbt/ttf_gas/profiles.yml
       - export GOOGLE_APPLICATION_CREDENTIALS=/app/google-credentials.json
       - dbt run --project-dir /app/dbt/ttf_gas --profiles-dir /app/dbt/ttf_gas
 
