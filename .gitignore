@@ -16,4 +16,4 @@ logs/
 *.tfstate.*
 .terraform/
 .terraform.lock.hcl
-google-credentials.json
+google-credentials.jsondbt/ttf_gas/.user.yml
